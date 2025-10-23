@@ -1,17 +1,25 @@
 package com.pluralsight;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        //Prompt
         Scanner myScanner = new Scanner(System.in);
+        ArrayList<String> players = new ArrayList<>();
+        ArrayList<Hand> hands = new ArrayList<>();
 
-        System.out.println("Player 1, Enter your name: ");
-        String player1 = myScanner.nextLine();
+        //Prompt number of players
+        System.out.println("How many players will be playing?");
+        int numberOfPlayers = myScanner.nextInt();
+        myScanner.nextLine();
 
-        System.out.println("Player 2, Enter your name: ");
-        String player2 = myScanner.nextLine();
+        //Prompt player names and creating new hands for each player
+        for (int i = 0; i < numberOfPlayers; i++) {
+            System.out.println("Player " + (i + 1) +", Enter your name: ");
+            players.add(i, myScanner.nextLine());
+            hands.add(i, new Hand());
+        }
 
         //Instantiating classes
         Deck deck = new Deck();

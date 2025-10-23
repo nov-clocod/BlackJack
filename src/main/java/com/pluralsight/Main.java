@@ -21,20 +21,14 @@ public class Main {
             hands.add(i, new Hand());
         }
 
-        //Instantiating classes
+        //Instantiating deck
         Deck deck = new Deck();
-        Hand hand1 = new Hand();
-        Hand hand2 = new Hand();
 
         //Randomize deck
         deck.shuffle();
 
         //Deal cards
-        hand1.deal(deck.deal());
-        hand1.deal(deck.deal());
 
-        hand2.deal(deck.deal());
-        hand2.deal(deck.deal());
 
         //Display cards
         System.out.println("==============");
@@ -58,16 +52,16 @@ public class Main {
     }
 
     public static String compare(int hand1, int hand2, String player1, String player2) {
-        if (hand1 == hand2) {
+        if (hand1 > 21) {
+            return player1 + ": You went over. You lose";
+        } else if (hand2 > 21) {
+            return player2 + ": You went over. You lose";
+        } else if (hand1 == hand2) {
             return "Draw";
         } else if (hand1 == 21) {
             return player1 + ": Win with a Blackjack";
         } else if (hand2 == 21) {
             return player2 + ": Win with a Blackjack";
-        } else if (hand1 > 21) {
-            return player1 + ": You went over. You lose";
-        } else if (hand2 > 21) {
-            return player2 + ": You went over. You lose";
         } else if (hand1 > hand2) {
             return player1 + ": You win";
         } else {

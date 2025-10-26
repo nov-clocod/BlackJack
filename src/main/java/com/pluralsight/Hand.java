@@ -28,6 +28,9 @@ public class Hand {
             card.flip(); // turn the card over to see the value
             value += card.getPointValue();
             card.flip(); // hide the card again
+            if (card.getPointValue() == 11 && value > 21) {
+                value -= 10;
+            }
         }
 
         return value;

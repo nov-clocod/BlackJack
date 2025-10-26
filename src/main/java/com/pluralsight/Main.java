@@ -17,9 +17,11 @@ public class Main {
         //Prompt player names and creating new hands for each player
         for (int i = 0; i < numberOfPlayers; i++) {
             System.out.println("Player " + (i + 1) +", Enter your name: ");
-            players.add(i, myScanner.nextLine());
+            players.add(i, myScanner.nextLine().trim());
             hands.add(i, new Hand());
         }
+
+        System.out.println();
 
         //Instantiating deck
         Deck deck = new Deck();
@@ -28,44 +30,73 @@ public class Main {
         deck.shuffle();
 
         //Deal cards
-
+        for (Hand hand : hands) {
+            hand.deal(deck.deal());
+            hand.deal(deck.deal());
+        }
 
         //Display cards
-        System.out.println("==============");
-        System.out.println(player1 + "'s");
-        hand1.print();
-        System.out.println("==============");
-        System.out.println(player2 + "'s");
-        hand2.print();
-        System.out.println("==============");
+        for (int i = 0; i < players.size(); i++) {
+            System.out.println("==============");
+            System.out.println(players.get(i) + "'s");
+            hands.get(i).print();
+            System.out.println("==============");
+        }
 
-        int value1 = hand1.getValue();
-        int value2 = hand2.getValue();
+        System.out.println();
 
-        System.out.println("==============");
-        System.out.println(player1 + ": Value is "+ value1);
-        System.out.println(player2 + ": Value is "+ value2);
-        System.out.println("==============");
+        //Display all hand values
+        for (int i = 0; i < players.size(); i++) {
+            System.out.println("==============");
+            System.out.println(players.get(i) + ": Value is " + hands.get(i).getValue());
+            System.out.println("==============");
+        }
 
         //Compare cards with condition logic and displays the result
-        System.out.println(compare(value1, value2, player1, player2));
+        compare(hands, players);
     }
 
-    public static String compare(int hand1, int hand2, String player1, String player2) {
-        if (hand1 > 21) {
-            return player1 + ": You went over. You lose";
-        } else if (hand2 > 21) {
-            return player2 + ": You went over. You lose";
-        } else if (hand1 == hand2) {
-            return "Draw";
-        } else if (hand1 == 21) {
-            return player1 + ": Win with a Blackjack";
-        } else if (hand2 == 21) {
-            return player2 + ": Win with a Blackjack";
-        } else if (hand1 > hand2) {
-            return player1 + ": You win";
+    public static void compare(ArrayList<Hand> hands, ArrayList<String> players) {
+        int highestPoint = 0;
+
+        //Arraylist to store winner and who has a bust
+        ArrayList<String> playersWithHighestPoint = new ArrayList<>();
+        ArrayList<String> playersBusted = new ArrayList<>();
+
+        //Sorting hands to determine a winner and who has a bust
+        for (int i = 0; i < hands.size(); i++) {
+            int currentHandValue = hands.get(i).getValue();
+            if (currentHandValue <= 21) {
+                if (currentHandValue > highestPoint) {
+                    highestPoint = currentHandValue;
+                    playersWithHighestPoint.clear();
+                    playersWithHighestPoint.add(players.get(i));
+
+                } else if (currentHandValue == highestPoint) {
+                    playersWithHighestPoint.add(players.get(i));
+                }
+            } else {
+                playersBusted.add(players.get(i));
+            }
+        }
+
+        //Displaying either all bust, who won, or who drawn
+        if (playersWithHighestPoint.isEmpty()) {
+            System.out.println("\nAll players busted!");
+        } else if (playersWithHighestPoint.size() == 1) {
+            System.out.println();
+            System.out.println(playersWithHighestPoint.get(0) + " is the winner!");
         } else {
-            return player2 + ": You win";
+            System.out.println();
+            for (String playerDraw : playersWithHighestPoint) {
+                System.out.println(playerDraw + " drawn");
+            }
+        }
+
+        //Display players who bust
+        System.out.println();
+        for (String playerBust : playersBusted) {
+            System.out.println(playerBust + " bust!");
         }
     }
 }

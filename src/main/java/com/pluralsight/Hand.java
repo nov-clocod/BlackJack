@@ -23,14 +23,23 @@ public class Hand {
     // the value of each card - and adds up all values
     public int getValue() {
         int value = 0;
+        int acesInHand = 0;
 
         for (Card card : cards) {
             card.flip(); // turn the card over to see the value
             value += card.getPointValue();
-            card.flip(); // hide the card again
-            if (card.getPointValue() == 11 && value > 21) {
-                value -= 10;
+            //Check the number of aces in hand
+            if (card.getValue().equalsIgnoreCase("A")) {
+                acesInHand++;
             }
+            card.flip(); // hide the card again
+        }
+
+        //If there's aces in hand that causes hand to bust
+        //The value of the aces will be decreased by 10
+        while (value > 21 && acesInHand > 0) {
+            value -= 10;
+            acesInHand--;
         }
 
         return value;

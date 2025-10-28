@@ -30,30 +30,13 @@ public class Main {
         deck.shuffle();
 
         //Deal cards
-        for (int i = 0; i < hands.size(); i++) {
-            hands.get(i).deal(deck.deal());
-            hands.get(i).deal(deck.deal());
-
-            System.out.println("==============");
-            System.out.println(players.get(i) + "'s");
-            hands.get(i).print();
-            while (hands.get(i).getValue() < 21) {
-                System.out.println("Do you want to hit (enter 1) or stand (enter 2)?");
-                int hitOrStand = myScanner.nextInt();
-                myScanner.nextLine();
-
-                if (hitOrStand == 1) {
-                    hands.get(i).deal(deck.deal());
-                    System.out.println("Current hand: ");
-                    hands.get(i).print();
-                } else if (hitOrStand == 2) {
-                    System.out.println("You've stand");
-                    break;
-                } else {
-                    System.out.println("That was an invalid choice");
-                }
-            }
+        for (Hand hand : hands) {
+            hand.deal(deck.deal());
+            hand.deal(deck.deal());
         }
+
+        //Hit or stand
+        hitOrStand(players, hands, deck, myScanner);
 
         System.out.println();
 
@@ -109,6 +92,30 @@ public class Main {
         System.out.println();
         for (String playerBust : playersBusted) {
             System.out.println(playerBust + " bust!");
+        }
+    }
+
+    public static void hitOrStand(ArrayList<String> players, ArrayList<Hand> hands, Deck deck, Scanner scanner) {
+        for (int i = 0; i < hands.size(); i++) {
+            System.out.println("==============");
+            System.out.println(players.get(i) + "'s");
+            hands.get(i).print();
+            while (hands.get(i).getValue() < 21) {
+                System.out.println("Do you want to hit (enter 1) or stand (enter 2)?");
+                int hitOrStand = scanner.nextInt();
+                scanner.nextLine();
+
+                if (hitOrStand == 1) {
+                    hands.get(i).deal(deck.deal());
+                    System.out.println(players.get(i) + "'s" + " current hand: ");
+                    hands.get(i).print();
+                } else if (hitOrStand == 2) {
+                    System.out.println("You've stand");
+                    break;
+                } else {
+                    System.out.println("That was an invalid choice");
+                }
+            }
         }
     }
 }
